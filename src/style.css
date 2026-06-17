@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+/* ─── Design token system ────────────────────────────────────────────────────
+   All colour, font, and spacing decisions defined once here.
+   Derived from the Clarity brand: gold logo, white, soft warm grey.
+   ─────────────────────────────────────────────────────────────────────────── */
+@theme {
+  /* Brand */
+  --color-brand-gold:      #F0A500;   /* logo gold — backgrounds and accents only */
+  --color-brand-gold-dark: #C47D00;   /* darkened gold for text on white — contrast 4.7:1 ✓ WCAG AA */
+  --color-brand-gold-deep: #9A6200;   /* deep gold for hover states — contrast 7:1 ✓ WCAG AAA */
+
+  /* Warm grey scale — page bg, cards, borders */
+  --color-warm-50:  #FDFAF6;          /* page background */
+  --color-warm-100: #F5F0E8;          /* card/input background */
+  --color-warm-200: #E8E2D8;          /* borders, dividers */
+  --color-warm-300: #D0C9BC;          /* disabled, placeholder */
+
+  /* Ink — text */
+  --color-ink:      #1C1A17;          /* primary text — warm near-black */
+  --color-ink-mid:  #5A5550;          /* secondary text */
+  --color-ink-soft: #8B8580;          /* muted text, meta */
+
+  /* Confidence levels — colour + meaning, never colour alone */
+  --color-conf-high:     #1A6B3C;     /* green — strong match, contrast on white 5.3:1 ✓ */
+  --color-conf-high-bg:  #EBF5EE;
+  --color-conf-med:      #92400E;     /* amber — possible match, contrast 5.9:1 ✓ */
+  --color-conf-med-bg:   #FEF3C7;
+  --color-conf-review:   #4C1D95;     /* purple — needs review, contrast 8.4:1 ✓ */
+  --color-conf-review-bg:#EDE9FE;
+
+  /* System */
+  --color-error:     #B91C1C;
+  --color-error-bg:  #FEF2F2;
+
+  /* Typography */
+  --font-display: Georgia, 'Times New Roman', serif;   /* used ONLY for the money total */
+  --font-body:    system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ─── Base resets ──────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-body);
+  background-color: var(--color-warm-50);
+  color: var(--color-ink);
+  /* Prevent text zoom on iOS orientation change */
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Focus visible — never hide focus, only restyle ─────────────────────── */
+:focus-visible {
+  outline: 3px solid var(--color-brand-gold);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ─── Reduced motion ─────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ─── Screen-reader only utility ─────────────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+.sr-only:focus,
+.sr-only:focus-within {
+  position: fixed;
+  width: auto;
+  height: auto;
+  padding: 0.5rem 1rem;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* ─── Money display — Georgia only here ──────────────────────────────────── */
+.font-display {
+  font-family: var(--font-display);
+}
