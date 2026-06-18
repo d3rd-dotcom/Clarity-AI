@@ -1,0 +1,27 @@
+{
+  "benefit_name": "Child Tax Credit",
+  "gov_url": "https://www.gov.uk/child-tax-credit/eligibility",
+  "last_updated": "2025-04-01",
+  "chunks": [
+    {
+      "chunk_type": "eligibility_rules",
+      "content": "Child Tax Credit eligibility: You can only claim Child Tax Credit if you are already receiving Working Tax Credit, or if you made a claim before April 2019 and have not been moved to Universal Credit yet. New claimants cannot start a new Child Tax Credit claim and must claim through Universal Credit instead. If you are already on Child Tax Credit and have a change in circumstances, you may be moved to Universal Credit. You must be responsible for at least one child under 16 or under 20 in approved education or training."
+    },
+    {
+      "chunk_type": "payment_amounts",
+      "content": "Child Tax Credit payment amounts as of April 2025: The family element is up to 545 pounds per year. The child element is up to 3,455 pounds per year per child (this is the maximum, actual amount depends on income). The disability element adds up to 3,905 pounds per year per disabled child. The severe disability element adds up to 1,575 pounds per year per severely disabled child. The maximum Child Tax Credit for a family with one child with no disabilities is approximately 3,455 pounds per year or around 288 pounds per month."
+    },
+    {
+      "chunk_type": "claim_steps",
+      "content": "How to claim Child Tax Credit: If you are a new claimant, you cannot claim Child Tax Credit and must apply for Universal Credit instead. If you are an existing claimant, renew your claim each year by the deadline shown on your renewal pack. Contact HMRC Tax Credits helpline on 0345 300 3900 for assistance."
+    },
+    {
+      "chunk_type": "who_does_not_qualify",
+      "content": "Who does not qualify for Child Tax Credit: Anyone making a new claim for child financial support must now use Universal Credit instead of Child Tax Credit. Child Tax Credit is only available to existing claimants who have not yet been migrated to Universal Credit."
+    },
+    {
+      "chunk_type": "benefit_interactions",
+      "content": "Child Tax Credit interactions with other benefits: Child Tax Credit is being phased out and replaced by the child element of Universal Credit. You cannot receive both Child Tax Credit and Universal Credit at the same time. If you are moved to Universal Credit, transitional protection ensures you do not lose money immediately."
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "benefit_name": "Universal Credit",
+  "gov_url": "https://www.gov.uk/universal-credit/eligibility",
+  "last_updated": "2025-04-01",
+  "chunks": [
+    {
+      "chunk_type": "eligibility_rules",
+      "content": "Universal Credit eligibility rules: You can get Universal Credit if you are on a low income or out of work. You must be 18 or over (there are some exceptions if you are 16 or 17). You must be under State Pension age. You must live in the UK. You must have less than 16,000 pounds in savings. If you live with a partner, your combined savings must be less than 16,000 pounds and your partner's income and savings will affect your claim. You can claim if you are employed, self-employed, unemployed, or unable to work due to illness or disability. You can claim if you are caring for a child or young person."
+    },
+    {
+      "chunk_type": "payment_amounts",
+      "content": "Universal Credit payment amounts as of April 2025: The standard allowance is 311.68 pounds per month for single claimants under 25. For single claimants aged 25 or over, the standard allowance is 393.45 pounds per month. For couples where both are under 25, the joint allowance is 489.23 pounds per month. For couples where one or both are aged 25 or over, the joint allowance is 617.60 pounds per month. Additional elements can increase your payment: the child element adds 269.58 pounds per month for the first child (born before April 2017) and 229.17 pounds for each additional child. The limited capability for work and work-related activity (LCWRA) element adds 416.19 pounds per month. The carer element adds 198.31 pounds per month. Housing costs element is based on your actual rent or mortgage interest."
+    },
+    {
+      "chunk_type": "claim_steps",
+      "content": "How to claim Universal Credit: Apply online at gov.uk/apply-universal-credit. You will need a Government Gateway account or Universal Credit account. You must verify your identity online or at a Jobcentre Plus. You need to complete a claimant commitment. Your first payment arrives around 5 weeks after you apply because of a built-in waiting period. You can request an advance payment to cover the waiting period. After your first payment, you are paid monthly on the same date each month."
+    },
+    {
+      "chunk_type": "who_does_not_qualify",
+      "content": "Who does not qualify for Universal Credit: You cannot get Universal Credit if you have savings or capital over 16,000 pounds. You cannot claim if you are a full-time student (with some exceptions such as if you have a disability, are responsible for a child, or are in a couple and your partner is not a full-time student). You cannot claim if you are subject to immigration control. You cannot claim if you are in receipt of certain other legacy benefits that have not yet been migrated to Universal Credit."
+    },
+    {
+      "chunk_type": "benefit_interactions",
+      "content": "Universal Credit interactions with other benefits: Universal Credit replaces six legacy benefits: Income-based Jobseekers Allowance, Income-related Employment and Support Allowance, Income Support, Child Tax Credit, Working Tax Credit, and Housing Benefit. If you get Universal Credit, you may still be able to claim Child Benefit separately as it is not replaced by Universal Credit. Universal Credit is means-tested, so earnings from work will reduce your payment through the taper rate of 55 pence reduction for every 1 pound earned above your work allowance."
+    }
+  ]
+}

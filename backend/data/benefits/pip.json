@@ -1,0 +1,27 @@
+{
+  "benefit_name": "Personal Independence Payment (PIP)",
+  "gov_url": "https://www.gov.uk/pip/eligibility",
+  "last_updated": "2025-04-01",
+  "chunks": [
+    {
+      "chunk_type": "eligibility_rules",
+      "content": "Personal Independence Payment (PIP) eligibility rules: PIP helps with extra living costs if you have a long-term physical or mental health condition or disability. You must be aged 16 to State Pension age. You must have had difficulties with daily living or getting around for at least 3 months and expect these to continue for at least 9 months. You do not need to have paid National Insurance contributions. Your income and savings do not affect whether you can get PIP. You must live in England, Wales, or Scotland. A health professional will assess how your condition affects you."
+    },
+    {
+      "chunk_type": "payment_amounts",
+      "content": "PIP payment amounts as of April 2025: PIP has two components. The daily living component is paid at the standard rate of 73.90 pounds per week or the enhanced rate of 110.40 pounds per week. The mobility component is paid at the standard rate of 29.20 pounds per week or the enhanced rate of 77.05 pounds per week. You can receive both components. Maximum weekly payment combining both enhanced rates is 187.45 pounds per week. Payments are made every four weeks."
+    },
+    {
+      "chunk_type": "claim_steps",
+      "content": "How to claim PIP: Call the PIP claim line on 0800 917 2222 (Monday to Friday, 8am to 6pm) to start your claim. You will be sent a PIP2 form called How your disability affects you. Complete this form in detail with examples of how your condition affects your daily life. You may be invited to a face-to-face or telephone assessment. Allow 4 to 6 months for a decision, though it can take longer."
+    },
+    {
+      "chunk_type": "who_does_not_qualify",
+      "content": "Who does not qualify for PIP: You cannot claim PIP if you are State Pension age or over (you may be able to claim Attendance Allowance instead). PIP is not awarded based on a diagnosis alone but on how your condition affects your ability to carry out daily living and mobility activities. You will not qualify if your difficulties are expected to last less than 9 months. People with no recourse to public funds due to immigration status cannot claim PIP."
+    },
+    {
+      "chunk_type": "benefit_interactions",
+      "content": "PIP interactions with other benefits: PIP is not means-tested and does not affect most other benefits. Receiving PIP can actually increase your entitlement to other benefits such as Universal Credit (you may qualify for the limited capability for work element), Housing Benefit, and Council Tax Reduction. PIP is paid on top of wages, other benefits, or a pension. PIP is tax-free."
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "benefit_name": "Housing Benefit",
+  "gov_url": "https://www.gov.uk/housing-benefit/eligibility",
+  "last_updated": "2025-04-01",
+  "chunks": [
+    {
+      "chunk_type": "eligibility_rules",
+      "content": "Housing Benefit eligibility rules: Housing Benefit helps pay rent for people on a low income. You can only make a new claim for Housing Benefit if you are State Pension age or over, or if you live in temporary or supported accommodation. Most working-age people now need to claim the housing costs element of Universal Credit instead of Housing Benefit. You must be renting your home (not buying it on a mortgage, with some exceptions). You must be on a low income or claiming certain other benefits. You must not have savings over 16,000 pounds. You must be living in the UK."
+    },
+    {
+      "chunk_type": "payment_amounts",
+      "content": "Housing Benefit payment amounts as of April 2025: The amount you get depends on your Local Housing Allowance (LHA) rate, which is set by your local council. The LHA is based on the cheapest 30 percent of rents in your area. For example, in Manchester the LHA for a one-bedroom property is approximately 92 pounds per week (around 400 pounds per month). In London rates are significantly higher. The maximum amount is capped at the LHA rate for the size of property you need based on how many people live with you. If you are working, your Housing Benefit may be reduced based on your income."
+    },
+    {
+      "chunk_type": "claim_steps",
+      "content": "How to claim Housing Benefit: If you are working age, you must claim the housing costs element through Universal Credit at gov.uk/apply-universal-credit. If you are State Pension age or in supported accommodation, you claim Housing Benefit from your local council. Contact your council directly or visit their website. You will need proof of identity, your tenancy agreement or rent details, and details of your income and savings."
+    },
+    {
+      "chunk_type": "who_does_not_qualify",
+      "content": "Who does not qualify for Housing Benefit: Working-age people who are not in supported or temporary accommodation cannot make a new claim for Housing Benefit since April 2019 and must claim through Universal Credit instead. You cannot claim if you own the home you live in (though Universal Credit mortgage interest support may apply). You cannot claim if your savings exceed 16,000 pounds. Students in full-time education generally cannot claim unless they have a disability or dependent children."
+    },
+    {
+      "chunk_type": "benefit_interactions",
+      "content": "Housing Benefit interactions with other benefits: For working-age claimants, housing support is now provided through the Universal Credit housing costs element, not Housing Benefit. If you are on Universal Credit, your housing costs are included in your Universal Credit payment. Housing Benefit can be paid directly to your landlord or to you. Receiving Housing Benefit does not affect Child Benefit entitlement."
+    }
+  ]
+}

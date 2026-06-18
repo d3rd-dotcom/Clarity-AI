@@ -1,0 +1,27 @@
+{
+  "benefit_name": "Child Benefit",
+  "gov_url": "https://www.gov.uk/child-benefit/eligibility",
+  "last_updated": "2025-04-01",
+  "chunks": [
+    {
+      "chunk_type": "eligibility_rules",
+      "content": "Child Benefit eligibility rules: You can claim Child Benefit if you are responsible for a child under 16, or under 20 if they are in approved education or training. Only one person can claim Child Benefit for each child. You do not need to be the biological parent to claim, but the child must live with you or you must be paying at least the same amount as Child Benefit towards the child's upkeep. There is no lower income limit to claim Child Benefit. However, if you or your partner earns over 60,000 pounds per year, you will have to pay back some or all of the Child Benefit through the High Income Child Benefit Tax Charge."
+    },
+    {
+      "chunk_type": "payment_amounts",
+      "content": "Child Benefit payment amounts as of April 2025: The eldest or only child receives 25.60 pounds per week. Each additional child receives 16.95 pounds per week. Payments are made every four weeks or every week for single parents or those receiving certain other benefits. For a single parent with two children, this amounts to approximately 190.20 pounds per month (25.60 plus 16.95 multiplied by 4.33 weeks per month)."
+    },
+    {
+      "chunk_type": "claim_steps",
+      "content": "How to claim Child Benefit: You can claim online at gov.uk/child-benefit or by completing form CH2 and sending it to the Child Benefit Office. You should claim as soon as the child is born or comes to live with you. Claims can be backdated up to 3 months. You will need the child's birth certificate or adoption papers. Payments are usually made within 3 weeks of receiving a completed claim."
+    },
+    {
+      "chunk_type": "who_does_not_qualify",
+      "content": "Who does not qualify for Child Benefit: You cannot claim for a child who is 16 or over and not in approved education or training. You cannot claim if another person is already claiming for the same child. If you earn over 80,000 pounds per year, you will have to repay all of the Child Benefit through the High Income Child Benefit Tax Charge, making it effectively not worth claiming (though registering still gives National Insurance credits)."
+    },
+    {
+      "chunk_type": "benefit_interactions",
+      "content": "Child Benefit interactions with other benefits: Child Benefit is paid separately from Universal Credit and does not reduce your Universal Credit entitlement. Claiming Child Benefit also gives you National Insurance credits towards your State Pension even if you do not work, which is important for the non-working parent. Child Benefit does not count as income for Tax Credits or Universal Credit purposes."
+    }
+  ]
+}

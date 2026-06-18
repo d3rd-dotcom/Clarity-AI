@@ -1,0 +1,27 @@
+{
+  "benefit_name": "Free School Meals",
+  "gov_url": "https://www.gov.uk/apply-free-school-meals",
+  "last_updated": "2025-04-01",
+  "chunks": [
+    {
+      "chunk_type": "eligibility_rules",
+      "content": "Free School Meals eligibility rules: Your child may be able to get free school meals if you receive Universal Credit and your household net earnings are not more than 7,400 pounds a year (after tax and not including any benefits you get). You also qualify if you receive Income Support, income-based Jobseekers Allowance, income-related Employment and Support Allowance, Child Tax Credit (but not Working Tax Credit) and your annual gross income is no more than 16,190 pounds, Working Tax Credit run-on paid for 4 weeks after you stop qualifying for Working Tax Credit, or support under Part VI of the Immigration and Asylum Act 1999. Children who receive these benefits directly may also be eligible."
+    },
+    {
+      "chunk_type": "payment_amounts",
+      "content": "Free School Meals value as of April 2025: The government provides funding to schools of approximately 2.53 pounds per meal per day in primary schools and 2.65 pounds in secondary schools. Each child receives one free meal per school day. This equates to approximately 12.65 to 13.25 pounds per week per child, or approximately 460 to 482 pounds per year per child (based on approximately 190 school days). For Universal Infant Free School Meals, all children in Reception, Year 1, and Year 2 receive free meals regardless of income."
+    },
+    {
+      "chunk_type": "claim_steps",
+      "content": "How to apply for Free School Meals: Contact your child's school directly or apply through your local council. Many councils have an online application form on their website. You will need to provide details of the benefit you receive, such as your Universal Credit award notice or benefit letters. Your school or local council will check your eligibility. If eligible, free school meals usually start very quickly, often within a few days."
+    },
+    {
+      "chunk_type": "who_does_not_qualify",
+      "content": "Who does not qualify for Free School Meals: Families who receive Universal Credit with net earnings over 7,400 pounds per year do not qualify. Families who do not receive qualifying benefits do not qualify, even if they are on a low income. Children in private schools are not eligible through this scheme. Children who are home-educated are not eligible."
+    },
+    {
+      "chunk_type": "benefit_interactions",
+      "content": "Free School Meals interactions with other benefits: Eligibility for Free School Meals is linked to receiving Universal Credit or other qualifying benefits. Getting Free School Meals does not affect any of your other benefits. For children in Reception, Year 1, and Year 2, Universal Infant Free School Meals are available to all pupils regardless of income, so additional means-tested FSM only applies from Year 3 onwards."
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "benefit_name": "Carer's Allowance",
+  "gov_url": "https://www.gov.uk/carers-allowance/eligibility",
+  "last_updated": "2025-04-01",
+  "chunks": [
+    {
+      "chunk_type": "eligibility_rules",
+      "content": "Carer's Allowance eligibility rules: You can claim Carer's Allowance if you spend at least 35 hours a week caring for someone who gets a qualifying disability benefit. The person you care for must receive the daily living component of PIP at either rate, the higher or middle rate care component of Disability Living Allowance (DLA), Attendance Allowance at either rate, or the daily living component of Adult Disability Payment. You must be 16 or over. You must not be in full-time education with 21 or more hours of supervised study per week. You must earn 151 pounds or less per week after tax, National Insurance, and allowable expenses."
+    },
+    {
+      "chunk_type": "payment_amounts",
+      "content": "Carer's Allowance payment amounts as of April 2025: Carer's Allowance is paid at 81.90 pounds per week. This amounts to approximately 354.90 pounds per month. Carer's Allowance is taxable. If you are on Universal Credit, receiving Carer's Allowance may mean you qualify for the carer element of Universal Credit which adds 198.31 pounds per month on top."
+    },
+    {
+      "chunk_type": "claim_steps",
+      "content": "How to claim Carer's Allowance: You can apply online at gov.uk/carers-allowance/how-to-claim. You will need the National Insurance number for yourself and the person you care for. You will need details of the disability benefit the person you care for receives. You will need your bank account details for payment. Decisions are usually made within 3 weeks."
+    },
+    {
+      "chunk_type": "who_does_not_qualify",
+      "content": "Who does not qualify for Carer's Allowance: You cannot claim Carer's Allowance if you earn more than 151 pounds per week net. You cannot claim if you are a full-time student with 21 or more hours of supervised study. You cannot claim if the person you care for does not receive a qualifying disability benefit. You cannot claim Carer's Allowance at the same time as State Pension if your State Pension is equal to or more than Carer's Allowance."
+    },
+    {
+      "chunk_type": "benefit_interactions",
+      "content": "Carer's Allowance interactions with other benefits: Claiming Carer's Allowance can trigger an Underlying Entitlement to other benefits even if you cannot receive the payment itself due to benefit overlapping rules. Claiming Carer's Allowance gives you National Insurance credits. If you are on Universal Credit, you may also receive the Carer Element which pays an additional 198.31 pounds per month."
+    }
+  ]
+}

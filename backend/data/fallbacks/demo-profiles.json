@@ -1,0 +1,91 @@
+{
+  "profiles": {
+    "profile_a": {
+      "description": "Single parent, unemployed, 2 children, renting privately, age 28, no health conditions",
+      "situation": "Single parent, unemployed, 2 children, renting privately, aged 25-60, no health conditions or disability",
+      "result": {
+        "benefits": [
+          {
+            "name": "Universal Credit",
+            "confidence": "HIGH",
+            "reason": "You are a single parent who is unemployed and renting. Universal Credit is designed for exactly this situation and covers living costs plus a housing element.",
+            "weekly_estimate": 155.90,
+            "monthly_estimate": 675.56,
+            "claim_url": "https://www.gov.uk/apply-universal-credit",
+            "gov_rule_reference": "Universal Credit eligibility: single claimant aged 25 or over, unemployed, with children"
+          },
+          {
+            "name": "Child Benefit",
+            "confidence": "HIGH",
+            "reason": "You are responsible for 2 children. Child Benefit is paid for every child and is separate from Universal Credit.",
+            "weekly_estimate": 42.55,
+            "monthly_estimate": 184.18,
+            "claim_url": "https://www.gov.uk/child-benefit/overview",
+            "gov_rule_reference": "Child Benefit: 25.60 per week for eldest child, 16.95 per week for each additional child"
+          },
+          {
+            "name": "Free School Meals",
+            "confidence": "HIGH",
+            "reason": "As a Universal Credit recipient who is unemployed, your children qualify for free school meals.",
+            "weekly_estimate": 25.30,
+            "monthly_estimate": 109.63,
+            "claim_url": "https://www.gov.uk/apply-free-school-meals",
+            "gov_rule_reference": "Free School Meals: eligible if receiving Universal Credit with net earnings under 7,400 per year"
+          }
+        ],
+        "total_weekly_estimate": 223.75,
+        "total_monthly_estimate": 969.37,
+        "disclaimer": "These are estimates only. Actual amounts depend on your rent, council area, and other circumstances. Always verify eligibility at GOV.UK or with an advisor."
+      }
+    },
+    "profile_b": {
+      "description": "Couple, one employed part-time, no children, renting, age 30-40, no health conditions",
+      "situation": "Couple, one partner employed part-time, no children, renting privately, aged 25-60, no health conditions",
+      "result": {
+        "benefits": [
+          {
+            "name": "Universal Credit",
+            "confidence": "MEDIUM",
+            "reason": "As a couple where one partner works part-time, you may qualify for Universal Credit depending on your combined earnings. Universal Credit tops up low earnings.",
+            "weekly_estimate": 60.00,
+            "monthly_estimate": 259.90,
+            "claim_url": "https://www.gov.uk/apply-universal-credit",
+            "gov_rule_reference": "Universal Credit: couple aged 25 or over, 617.60 per month standard allowance, reduced by 55p per pound earned above work allowance"
+          }
+        ],
+        "total_weekly_estimate": 60.00,
+        "total_monthly_estimate": 259.90,
+        "disclaimer": "These are estimates only. Universal Credit for couples depends heavily on combined earnings. Use the GOV.UK benefits calculator for a more accurate figure."
+      }
+    },
+    "profile_c": {
+      "description": "Single person, unable to work due to health condition, renting, age 35, disability",
+      "situation": "Single person, unable to work due to long-term health condition or disability, renting privately, aged 25-60",
+      "result": {
+        "benefits": [
+          {
+            "name": "Universal Credit",
+            "confidence": "HIGH",
+            "reason": "You are single, unable to work, and renting. You may qualify for both the standard allowance and the limited capability for work-related activity (LCWRA) element.",
+            "weekly_estimate": 187.49,
+            "monthly_estimate": 811.64,
+            "claim_url": "https://www.gov.uk/apply-universal-credit",
+            "gov_rule_reference": "Universal Credit: standard allowance 393.45 plus LCWRA element 416.19 per month"
+          },
+          {
+            "name": "Personal Independence Payment (PIP)",
+            "confidence": "MEDIUM",
+            "reason": "If your health condition has lasted or is expected to last over 9 months and affects your daily living or mobility, you may qualify for PIP. This is assessed independently of income.",
+            "weekly_estimate": 73.90,
+            "monthly_estimate": 319.99,
+            "claim_url": "https://www.gov.uk/pip/how-to-claim",
+            "gov_rule_reference": "PIP daily living standard rate 73.90 per week. Requires assessment of how condition affects daily activities."
+          }
+        ],
+        "total_weekly_estimate": 261.39,
+        "total_monthly_estimate": 1131.63,
+        "disclaimer": "PIP is shown as MEDIUM confidence because it requires a formal health assessment. Universal Credit LCWRA element also requires a Work Capability Assessment. Always verify at GOV.UK."
+      }
+    }
+  }
+}
