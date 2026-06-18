@@ -61,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { getChecklist } from '@/data/claimChecklists'
 
 const props = defineProps<{
@@ -72,5 +72,5 @@ const props = defineProps<{
 const isExpanded = ref(false)
 // Unique ID for aria-controls — prevents collisions when multiple checklists render
 const uid = Math.random().toString(36).slice(2, 8)
-const checklist = getChecklist(props.benefitName)
+const checklist = computed(() => getChecklist(props.benefitName))
 </script>
