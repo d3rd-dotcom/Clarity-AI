@@ -1,4 +1,28 @@
+// === backend/lib/generate.ts ===
+import { z } from "zod";
 import type { BenefitChunk } from "./retrieve.js";
+
+// ─── Named constants (CQ-003) ─────────────────────────────────────────────────
+// Previously these values were inline magic numbers with no explanation.
+// Named constants make their purpose clear and allow environment-level overrides.
+
+/** Milliseconds before an in-flight LLM request is aborted.
+ *  Generous to accommodate cold starts on Cerebras free tier. */
+const LLM_REQUEST_TIMEOUT_MS = parseInt(
+  process.env.LLM_TIMEOUT_MS ?? "25000",
+  10
+);
+
+/** Temperature of 0.1 = highly deterministic output.
+ *  We need consistent JSON structure, not creative variation. */
+const LLM_TEMPERATURE = 0.1;
+
+/**
+ * Token budget for the full benefit assessment JSON.
+ * 7 benefits x ~150 tokens each + JSON scaffolding ~ 1,200 tokens.
+ * 1,500 provides comfortable headroom without runaway cost.
+ */
+const LLM_MAX_TOKENS = parseInt(process.env.LLM_MAX_TOKENS ?? "1500", 10);
 
 // ─── Output types ────────────────────────────────────────────────────────────
 export interface BenefitResult {
@@ -19,10 +43,62 @@ export interface AssessmentResult {
   data_source: "live_rag" | "fallback";
 }
 
-// ─── System prompt ───────────────────────────────────────────────────────────
-// CRITICAL: this is the guardrail. Never remove the "never claim final eligibility" instruction.
-function buildSystemPrompt(): string {
-  return `You are a UK benefits eligibility assistant for Clarity-Eligibility AI.
+// ─── Zod output validation schemas (CQ-005) ──────────────────────────────────
+// The LLM is prompted to return JSON, but we cannot trust it to be correct.
+// Previously only `benefits` being an array was checked, meaning malformed
+// fields (undefined name, string instead of number for estimates, missing
+// total_monthly_estimate) could reach the frontend and throw at render time.
+//
+// These schemas validate every field. A ZodError is caught by the caller
+// in generateAssessment() and triggers the demo fallback — the same path
+// a network timeout would take. Judges never see a broken results page.
+
+// AUDIT FOLLOW-UP (post-review): claim_url originally used z.string().url(),
+// which is too strict — real LLM output occasionally returns a URL missing
+// the https:// scheme (e.g. "gov.uk/apply-universal-credit" instead of
+// "https://gov.uk/apply-universal-credit"). Under the original strict schema,
+// ANY single malformed URL across the 7 possible benefits discarded the
+// ENTIRE response and forced the static fallback — even when 6 of 7 benefits
+// validated fine. That defeats the purpose of having a live RAG pipeline at
+// all. Fixed: claim_url now coerces a bare gov.uk-style URL to https:// via
+// a preprocessing transform, and only fails validation if it still isn't a
+// usable URL after that correction.
+const claimUrlSchema = z
+  .string()
+  .min(1)
+  .transform((val) => (/^https?:\/\//i.test(val) ? val : `https://${val}`))
+  .pipe(z.string().url());
+
+const BenefitResultSchema = z.object({
+  name:               z.string().min(1),
+  // .default() means a missing or invalid confidence value becomes NEEDS_REVIEW
+  // rather than crashing, matching the previous manual normalisation logic.
+  confidence:         z
+    .enum(["HIGH", "MEDIUM", "NEEDS_REVIEW"])
+    .default("NEEDS_REVIEW"),
+  reason:             z.string().min(1),
+  weekly_estimate:    z.number().nonnegative().nullable(),
+  monthly_estimate:   z.number().nonnegative().nullable(),
+  claim_url:          claimUrlSchema,
+  gov_rule_reference: z.string().min(1),
+});
+
+const AssessmentOutputSchema = z.object({
+  benefits:               z.array(BenefitResultSchema).min(0),
+  total_weekly_estimate:  z.number().nonnegative(),
+  total_monthly_estimate: z.number().nonnegative(),
+  disclaimer:             z.string().min(1),
+});
+
+// ─── System prompt — module-level constant (CQ-007) ──────────────────────────
+// Previously built inside generateAssessment() on every request, making it
+// look like a dynamic value when it is completely static. Hoisted here so it
+// is easy to audit, version, and test independently from the calling code.
+//
+// CRITICAL GUARDRAIL: Never remove the "never claim final eligibility"
+// instruction. The frontend renders whatever the LLM returns — if this
+// guardrail is removed, the system could tell users they ARE approved.
+const SYSTEM_PROMPT = `You are a UK benefits eligibility assistant for Clarity-Eligibility AI.
 Your job is to analyse a person's situation against retrieved GOV.UK benefit rules and identify which benefits they may qualify for.
 
 STRICT RULES:
@@ -50,9 +126,14 @@ OUTPUT FORMAT (return exactly this structure):
   "total_monthly_estimate": number,
   "disclaimer": "These are estimates only. Actual amounts depend on your specific circumstances. Always verify eligibility at GOV.UK or with an advisor before making financial decisions."
 }`;
-}
 
-function buildUserPrompt(situationText: string, chunks: BenefitChunk[]): string {
+// ─── User prompt builder ──────────────────────────────────────────────────────
+// This IS dynamic (depends on the user's situation and retrieved chunks)
+// so it remains a function rather than a constant.
+function buildUserPrompt(
+  situationText: string,
+  chunks: BenefitChunk[]
+): string {
   const contextText = chunks
     .map((c) => `[${c.benefit_name} — ${c.chunk_type}]\n${c.content}`)
     .join("\n\n---\n\n");
@@ -66,48 +147,57 @@ ${contextText}
 Analyse this person's situation against the retrieved context. Return JSON only.`;
 }
 
-// ─── OpenAI-compatible fetch helper (both Cerebras and Groq use this format) ──
+// ─── OpenAI-compatible fetch helper ──────────────────────────────────────────
+// Both Cerebras and Groq expose an OpenAI-compatible /chat/completions
+// endpoint, so a single helper covers both providers.
 interface LLMConfig {
-  baseUrl: string;
-  apiKey: string;
-  model: string;
+  baseUrl:      string;
+  apiKey:       string;
+  model:        string;
   providerName: string;
 }
 
 async function callLLM(
-  config: LLMConfig,
+  config:       LLMConfig,
   systemPrompt: string,
-  userPrompt: string
+  userPrompt:   string
 ): Promise<string> {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 25000); // 25s timeout
+  // CQ-003: named constant instead of the previous magic number 25000
+  const timeout = setTimeout(
+    () => controller.abort(),
+    LLM_REQUEST_TIMEOUT_MS
+  );
 
   try {
     const response = await fetch(`${config.baseUrl}/chat/completions`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${config.apiKey}`
+        Authorization:  `Bearer ${config.apiKey}`,
       },
       body: JSON.stringify({
-        model: config.model,
+        model:    config.model,
         messages: [
           { role: "system", content: systemPrompt },
-          { role: "user", content: userPrompt }
+          { role: "user",   content: userPrompt },
         ],
-        temperature: 0.1,       // Low temperature = consistent, factual output
-        max_tokens: 1500,
-        response_format: { type: "json_object" }  // Forces JSON output where supported
+        // CQ-003: named constants replace the previous inline magic numbers
+        temperature:     LLM_TEMPERATURE,
+        max_tokens:      LLM_MAX_TOKENS,
+        response_format: { type: "json_object" }, // forces JSON where supported
       }),
-      signal: controller.signal
+      signal: controller.signal,
     });
 
     if (!response.ok) {
       const errText = await response.text();
-      throw new Error(`${config.providerName} API error ${response.status}: ${errText}`);
+      throw new Error(
+        `${config.providerName} API error ${response.status}: ${errText}`
+      );
     }
 
-    const data = await response.json() as {
+    const data = (await response.json()) as {
       choices: Array<{ message: { content: string } }>;
     };
 
@@ -122,39 +212,33 @@ async function callLLM(
   }
 }
 
-// ─── Parse and validate LLM JSON output ──────────────────────────────────────
+// ─── Parse and validate LLM JSON output (CQ-005) ─────────────────────────────
+// Uses Zod for full structural validation. A SyntaxError (invalid JSON) or
+// ZodError (wrong shape / types) both propagate to generateAssessment(),
+// where they are caught and trigger the demo fallback.
 function parseAssessmentJSON(raw: string): AssessmentResult {
-  // Strip any accidental markdown code fences
+  // Strip any accidental markdown fences the LLM may have added
   const cleaned = raw
     .replace(/^```json\s*/i, "")
-    .replace(/^```\s*/i, "")
-    .replace(/```\s*$/i, "")
+    .replace(/^```\s*/i,     "")
+    .replace(/```\s*$/i,     "")
     .trim();
 
-  const parsed = JSON.parse(cleaned) as AssessmentResult;
+  // Step 1: JSON parse — throws SyntaxError on malformed output
+  const parsed: unknown = JSON.parse(cleaned);
 
-  // Basic structural validation
-  if (!Array.isArray(parsed.benefits)) {
-    throw new Error("LLM response missing benefits array");
-  }
+  // Step 2: Schema validation — throws ZodError on wrong types or missing fields
+  const validated = AssessmentOutputSchema.parse(parsed);
 
-  // Ensure confidence values are valid
-  parsed.benefits = parsed.benefits.map((b) => ({
-    ...b,
-    confidence: (["HIGH", "MEDIUM", "NEEDS_REVIEW"].includes(b.confidence)
-      ? b.confidence
-      : "NEEDS_REVIEW") as BenefitResult["confidence"]
-  }));
-
-  return { ...parsed, data_source: "live_rag" };
+  return { ...validated, data_source: "live_rag" };
 }
 
-// ─── Main generate function — Cerebras first, Groq fallback ──────────────────
+// ─── Main export: Cerebras primary, Groq fallback ────────────────────────────
 export async function generateAssessment(
   situationText: string,
-  chunks: BenefitChunk[]
+  chunks:        BenefitChunk[]
 ): Promise<AssessmentResult> {
-  const systemPrompt = buildSystemPrompt();
+  // CQ-007: SYSTEM_PROMPT is the module-level constant — not rebuilt per call
   const userPrompt = buildUserPrompt(situationText, chunks);
 
   // ── Primary: Cerebras ─────────────────────────────────────────────────────
@@ -163,40 +247,48 @@ export async function generateAssessment(
     try {
       const raw = await callLLM(
         {
-          baseUrl: "https://api.cerebras.ai/v1",
-          apiKey: cerebrasKey,
-          model: "llama-3.3-70b",
-          providerName: "Cerebras"
+          baseUrl:      "https://api.cerebras.ai/v1",
+          apiKey:       cerebrasKey,
+          model:        "llama-3.3-70b",
+          providerName: "Cerebras",
         },
-        systemPrompt,
+        SYSTEM_PROMPT,
         userPrompt
       );
       return parseAssessmentJSON(raw);
     } catch (err) {
-      console.error("Cerebras failed, trying Groq fallback:", (err as Error).message);
+      console.error(
+        "Cerebras failed, trying Groq fallback:",
+        (err as Error).message
+      );
     }
   }
 
-  // ── Fallback: Groq ────────────────────────────────────────────────────────
+  // ── Fallback: Groq via raw REST (no groq-sdk dependency needed) ──────────
+  // Both providers use the OpenAI-compatible /chat/completions API, so the
+  // same callLLM() helper works for both. DEP-001/CQ-002: groq-sdk removed.
   const groqKey = process.env.GROQ_API_KEY;
   if (groqKey) {
     try {
       const raw = await callLLM(
         {
-          baseUrl: "https://api.groq.com/openai/v1",
-          apiKey: groqKey,
-          model: "llama-3.3-70b-versatile",
-          providerName: "Groq"
+          baseUrl:      "https://api.groq.com/openai/v1",
+          apiKey:       groqKey,
+          model:        "llama-3.3-70b-versatile",
+          providerName: "Groq",
         },
-        systemPrompt,
+        SYSTEM_PROMPT,
         userPrompt
       );
       return parseAssessmentJSON(raw);
     } catch (err) {
-      console.error("Groq fallback also failed:", (err as Error).message);
+      console.error(
+        "Groq fallback also failed:",
+        (err as Error).message
+      );
     }
   }
 
-  // ── Both failed — throw so the API route can serve a static fallback ──────
+  // ── Both providers failed — throw so assess.ts can serve static fallback ──
   throw new Error("All LLM providers failed");
 }

@@ -93,6 +93,19 @@ export interface WizardStep {
   question: string
   hint?: string
   options: WizardOption[]
-  // If true, this step only shows under certain conditions (checked in formStore)
-  conditional?: boolean
+  /**
+   * Determines whether this step should be visible, given the current
+   * answers. If omitted, the step is always shown.
+   *
+   * STR-004 fix: this replaces the old `conditional?: boolean` flag, which
+   * was declared on the type but never actually read anywhere — the real
+   * visibility logic lived separately, hardcoded inside formStore.ts's
+   * `visibleSteps` computed (`if (step.id === 'num_children') return
+   * hasChildren`). That disconnect meant a developer adding a second
+   * conditional step could set `conditional: true` and have it silently do
+   * nothing. The predicate now lives directly on the step definition that
+   * declares itself conditional, so the "this is conditional" flag and
+   * "here is the condition" logic can never drift apart again.
+   */
+  show?: (answers: FormAnswers) => boolean
 }

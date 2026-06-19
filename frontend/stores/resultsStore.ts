@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import type { AssessResponse } from '@/types'
+import type { AssessResponse } from '../types'
 
 export const useResultsStore = defineStore('results', () => {
   const data = ref<AssessResponse | null>(null)

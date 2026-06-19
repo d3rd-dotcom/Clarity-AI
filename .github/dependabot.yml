@@ -1,0 +1,43 @@
+version: 2
+updates:
+  # Backend — Express/TypeScript RAG pipeline
+  - package-ecosystem: "npm"
+    directory: "/backend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "backend"
+    groups:
+      aws-sdk-transitive:
+        # cohere-ai pulls in the entire AWS SDK transitively for SageMaker
+        # support this project doesn't use (DEP-003). Group these so a
+        # single PR updates the whole tree instead of dozens of individual
+        # bump PRs landing every week.
+        patterns:
+          - "@aws-sdk/*"
+          - "@smithy/*"
+          - "@aws-crypto/*"
+          - "@aws/*"
+
+  # Frontend — Vue 3 / Vite / TypeScript
+  - package-ecosystem: "npm"
+    directory: "/frontend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "frontend"
+
+  # GitHub Actions workflow action versions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    labels:
+      - "dependencies"
+      - "ci"

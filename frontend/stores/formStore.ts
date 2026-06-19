@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import type { FormAnswers, WizardStep } from '@/types'
+import type { FormAnswers, WizardStep } from '../types'
 
 // ─── Wizard step configuration ───────────────────────────────────────────────
 // Plain language designed for vulnerable users on mobile.
@@ -62,7 +62,13 @@ export const WIZARD_STEPS: WizardStep[] = [
     id: 'num_children',
     question: 'How many dependent children do you have?',
     hint: 'Children under 16, or under 20 if still in education.',
-    conditional: true, // only shown if household_situation includes children
+    // STR-004 fix: the visibility condition now lives directly on the step
+    // definition instead of being hardcoded separately in `visibleSteps`.
+    // Adding a future conditional step means adding a `show` predicate here
+    // — there is no second place to remember to update.
+    show: (answers) =>
+      answers.household_situation === 'single_parent' ||
+      answers.household_situation === 'couple_with_children',
     options: [
       { value: '1', label: '1 child', description: '', emoji: '' },
       { value: '2', label: '2 children', description: '', emoji: '' },
@@ -85,17 +91,11 @@ export const useFormStore = defineStore('form', () => {
     num_children: 0,
   })
 
-  // Which steps are actually visible — the children step is conditional
-  const visibleSteps = computed(() => {
-    const hasChildren =
-      answers.value.household_situation === 'single_parent' ||
-      answers.value.household_situation === 'couple_with_children'
-
-    return WIZARD_STEPS.filter(step => {
-      if (step.id === 'num_children') return hasChildren
-      return true
-    })
-  })
+  // Which steps are actually visible — driven entirely by each step's own
+  // `show` predicate (STR-004). A step with no `show` is always visible.
+  const visibleSteps = computed(() =>
+    WIZARD_STEPS.filter((step) => (step.show ? step.show(answers.value) : true))
+  )
 
   const totalSteps = computed(() => visibleSteps.value.length)
 
@@ -124,7 +124,7 @@ export const useFormStore = defineStore('form', () => {
       answers.value.housing_situation,
       answers.value.age_range,
       answers.value.health_disability,
-    ].every(v => v !== null)
+    ].every((v) => v !== null)
 
     const hasChildren =
       answers.value.household_situation === 'single_parent' ||

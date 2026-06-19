@@ -1,25 +1,34 @@
+// === backend/api/health.ts ===
 import { Router, Request, Response } from "express";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabase } from "../lib/clients.js";
 
 const router = Router();
 
+// ─── GET /api/health ──────────────────────────────────────────────────────────
+// Returns the status of all external services. Use this to verify everything
+// is connected before the demo. The frontend HealthIndicator polls this on
+// app load.
+//
+// SEC-005 / PERF-001: Previously this route called createClient() inline,
+// instantiating a brand-new Supabase connection pool on every GET /api/health
+// request. It now reuses the module-level singleton from lib/clients.ts,
+// which is shared with lib/retrieve.ts.
 router.get("/health", async (_req: Request, res: Response): Promise<void> => {
   const checks: Record<string, boolean | string> = {
     server: true,
-    cohere_key: !!process.env.COHERE_API_KEY,
-    cerebras_key: !!process.env.CEREBRAS_API_KEY,
-    groq_key: !!process.env.GROQ_API_KEY,
-    supabase_configured: !!(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY),
-    supabase_ping: false
+    cohere_key:           !!process.env.COHERE_API_KEY,
+    cerebras_key:         !!process.env.CEREBRAS_API_KEY,
+    groq_key:             !!process.env.GROQ_API_KEY,
+    supabase_configured:  !!(
+      process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY
+    ),
+    supabase_ping: false,
   };
 
-  // Ping Supabase to verify connection
+  // Ping Supabase with the shared singleton to verify the connection is live
   if (checks.supabase_configured) {
     try {
-      const supabase = createClient(
-        process.env.SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-      );
+      const supabase = getSupabase();
       const { error } = await supabase
         .from("benefit_chunks")
         .select("id")
@@ -36,9 +45,9 @@ router.get("/health", async (_req: Request, res: Response): Promise<void> => {
   const allGood = Object.values(checks).every((v) => v === true);
 
   res.status(allGood ? 200 : 206).json({
-    status: allGood ? "ok" : "degraded",
+    status:    allGood ? "ok" : "degraded",
     checks,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
 });
 

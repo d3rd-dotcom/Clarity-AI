@@ -1,8 +1,63 @@
-node_modules/
-build/
-dist/
-coverage/
+# === .gitignore (monorepo root) ===
+# STR-003: Sub-projects have their own .gitignore files (backend/.gitignore,
+# frontend/.gitignore) that cover their own node_modules, dist, and .env files.
+# This root-level file catches anything that slips through when running
+# git commands from the monorepo root, and covers IDE / OS artifacts that
+# neither sub-project gitignore would address.
+
+# ─── Operating System ────────────────────────────────────────────────────────
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ─── IDEs & Editors ──────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swp
+
+# ─── Environment files ───────────────────────────────────────────────────────
+# Belt-and-suspenders over sub-project .gitignores.
+# A .env accidentally created at the monorepo root must never be committed.
+.env
+.env.local
+.env.*.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ─── Node (root-level installs only) ─────────────────────────────────────────
+# node_modules/ with no leading slash correctly matches at any depth — this
+# is intentional, every sub-project's node_modules should be ignored.
+#
+# /package-lock.json (WITH a leading slash) anchors the pattern to the repo
+# root ONLY. Without the leading slash, this pattern would also match
+# backend/package-lock.json and frontend/package-lock.json — lockfiles that
+# must stay committed for reproducible installs (see audit DEP section) and
+# that CI's cache-dependency-path configuration depends on. A root-level
+# package-lock.json should not normally exist in this monorepo (the project
+# has no root-level package.json), but the rule is anchored defensively in
+# case one is ever created by an accidental `npm install` at the repo root.
+node_modules/
+/package-lock.json
+
+# ─── Build outputs ───────────────────────────────────────────────────────────
+dist/
+build/
+.turbo/
+
+# ─── Logs ────────────────────────────────────────────────────────────────────
 *.log
-.env*
-!.env.example
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*

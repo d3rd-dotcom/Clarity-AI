@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: ['**']
+
+jobs:
+  backend:
+    name: Backend — lint, type-check, audit
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type-check (tsc --noEmit)
+        run: npm run lint
+
+      - name: Run tests
+        run: npx vitest run
+
+      # DEP-002: fail CI on high/critical vulnerabilities in the dependency
+      # tree. cohere-ai pulls in the full AWS SDK transitively (DEP-003),
+      # so this is the cheapest safety net until that's trimmed upstream.
+      - name: Audit dependencies (high+ severity)
+        run: npm audit --audit-level=high
+
+  frontend:
+    name: Frontend — lint, test, build, audit
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type-check (vue-tsc --noEmit)
+        run: npm run lint
+
+      # `npm run test` invokes bare `vitest`, which runs in watch mode and
+      # never exits — that would hang CI indefinitely. `vitest run` runs
+      # once and exits with the correct status code.
+      - name: Run tests
+        run: npx vitest run
+
+      - name: Build production bundle
+        run: npm run build
+
+      - name: Audit dependencies (high+ severity)
+        run: npm audit --audit-level=high

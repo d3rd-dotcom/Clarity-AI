@@ -61,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, useId } from 'vue'
 import { getChecklist } from '@/data/claimChecklists'
 
 const props = defineProps<{
@@ -70,7 +70,13 @@ const props = defineProps<{
 }>()
 
 const isExpanded = ref(false)
-// Unique ID for aria-controls — prevents collisions when multiple checklists render
-const uid = Math.random().toString(36).slice(2, 8)
+
+// CQ-006 fix: Math.random() is not collision-safe, and — more importantly —
+// it produces different values on the server vs. the client during SSR or
+// hydration, which breaks the aria-controls ↔ id linkage and can trigger a
+// Vue hydration mismatch. Vue 3.5's built-in useId() is deterministic per
+// component instance and safe across SSR boundaries.
+const uid = useId()
+
 const checklist = computed(() => getChecklist(props.benefitName))
 </script>

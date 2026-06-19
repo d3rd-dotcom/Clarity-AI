@@ -1,29 +1,29 @@
 /**
+ * === backend/seed.ts ===
  * SEED SCRIPT — Run once to index benefit data into Supabase.
  *
  * Usage:
  *   npm run seed
  *
- * What it does:
- *   1. Reads all JSON files from data/benefits/
- *   2. Generates Cohere embeddings for each chunk
- *   3. Inserts into Supabase benefit_chunks table
+ * CQ-001: This script previously contained a full duplicate implementation
+ * of file-reading, embedding, and Supabase upsert logic that also lived in
+ * api/index.ts. Both now delegate to the single shared implementation in
+ * lib/indexer.ts, so a schema change only needs to be made once.
+ *
+ * STR-005: Row clearing is now handled inside indexBenefitData() via the
+ * truncate_benefit_chunks() RPC (see setup.sql), with a documented fallback
+ * to the legacy .neq() delete-all pattern for projects that haven't re-run
+ * setup.sql yet.
  *
  * Prerequisites:
- *   - Run setup.sql in Supabase SQL Editor first
- *   - .env file must have COHERE_API_KEY, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY
+ *   - Run setup.sql in the Supabase SQL Editor first
+ *   - .env must have COHERE_API_KEY, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY
  */
 
 import dotenv from "dotenv";
 dotenv.config();
 
-import { createClient } from "@supabase/supabase-js";
-import { CohereClient } from "cohere-ai";
-import { readFileSync, readdirSync } from "fs";
-import { join, dirname } from "path";
-import { fileURLToPath } from "url";
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
+import { indexBenefitData } from "./lib/indexer.js";
 
 // ─── Validate env ─────────────────────────────────────────────────────────────
 const REQUIRED = ["COHERE_API_KEY", "SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
@@ -33,110 +33,20 @@ if (missing.length > 0) {
   process.exit(1);
 }
 
-const cohere = new CohereClient({ token: process.env.COHERE_API_KEY! });
-const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+// ─── Run the shared indexing pipeline ─────────────────────────────────────────
+console.log("\n📂 Starting benefit data seed...\n");
 
-// ─── Load benefit files ───────────────────────────────────────────────────────
-interface BenefitFile {
-  benefit_name: string;
-  gov_url: string;
-  last_updated: string;
-  chunks: Array<{ chunk_type: string; content: string }>;
-}
+try {
+  const result = await indexBenefitData();
 
-const benefitsDir = join(__dirname, "data/benefits");
-const files = readdirSync(benefitsDir).filter((f) => f.endsWith(".json"));
-
-console.log(`\n📂 Found ${files.length} benefit files`);
-
-const allChunks: Array<{
-  benefit_name: string;
-  chunk_type: string;
-  content: string;
-  source_url: string;
-  last_updated: string;
-}> = [];
-
-for (const file of files) {
-  const data = JSON.parse(readFileSync(join(benefitsDir, file), "utf-8")) as BenefitFile;
-  console.log(`   ✓ ${data.benefit_name} — ${data.chunks.length} chunks`);
-  for (const chunk of data.chunks) {
-    allChunks.push({
-      benefit_name: data.benefit_name,
-      chunk_type: chunk.chunk_type,
-      content: chunk.content,
-      source_url: data.gov_url,
-      last_updated: data.last_updated
-    });
-  }
-}
-
-console.log(`\n📊 Total chunks to embed: ${allChunks.length}`);
-
-// ─── Generate embeddings ──────────────────────────────────────────────────────
-console.log("\n🔮 Generating Cohere embeddings...");
-
-const embedResponse = await cohere.embed({
-  texts: allChunks.map((c) => c.content),
-  model: "embed-english-v3.0",
-  inputType: "search_document",
-  embeddingTypes: ["float"]
-});
-
-// Handle Cohere SDK response shape
-const embeddings = Array.isArray(embedResponse.embeddings[0])
-  ? (embedResponse.embeddings as number[][])
-  : (embedResponse.embeddings as unknown as { float: number[][] }).float;
-
-if (embeddings.length !== allChunks.length) {
-  console.error(`❌ Embedding count mismatch: got ${embeddings.length}, expected ${allChunks.length}`);
+  console.log(
+    `\n✅ Seeding complete!`
+  );
+  console.log(`   Files processed:  ${result.files_processed}`);
+  console.log(`   Chunks indexed:   ${result.chunks_indexed}`);
+  console.log(`   Rows inserted:    ${result.rows_inserted}`);
+  console.log("\n   You can now start the server with: npm run dev\n");
+} catch (err) {
+  console.error(`\n❌ Seeding failed: ${(err as Error).message}\n`);
   process.exit(1);
 }
-
-console.log(`   ✓ Generated ${embeddings.length} embeddings (1024 dimensions each)`);
-
-// ─── Clear existing data ──────────────────────────────────────────────────────
-console.log("\n🗑️  Clearing existing benefit_chunks...");
-const { error: deleteError } = await supabase
-  .from("benefit_chunks")
-  .delete()
-  .neq("id", "00000000-0000-0000-0000-000000000000");
-
-if (deleteError) {
-  console.warn(`   ⚠️  Delete warning: ${deleteError.message}`);
-}
-
-// ─── Insert into Supabase ─────────────────────────────────────────────────────
-console.log("\n⬆️  Inserting into Supabase...");
-
-const rows = allChunks.map((chunk, i) => ({
-  benefit_name: chunk.benefit_name,
-  chunk_type: chunk.chunk_type,
-  content: chunk.content,
-  source_url: chunk.source_url,
-  last_updated: chunk.last_updated,
-  embedding: embeddings[i]
-}));
-
-const { data: inserted, error: insertError } = await supabase
-  .from("benefit_chunks")
-  .insert(rows)
-  .select("id");
-
-if (insertError) {
-  console.error(`❌ Insert failed: ${insertError.message}`);
-  process.exit(1);
-}
-
-console.log(`   ✓ Inserted ${inserted?.length ?? 0} rows`);
-
-// ─── Verify ───────────────────────────────────────────────────────────────────
-const { count } = await supabase
-  .from("benefit_chunks")
-  .select("*", { count: "exact", head: true });
-
-console.log(`\n✅ Seeding complete! benefit_chunks table now has ${count} rows.`);
-console.log("   You can now start the server with: npm run dev\n");
