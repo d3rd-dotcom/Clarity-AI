@@ -10,7 +10,7 @@ import { buildSituationText } from "../lib/situationBuilder.js";
 import { embedQuery } from "../lib/embed.js";
 import { retrieveRelevantChunks } from "../lib/retrieve.js";
 import { generateAssessment, type AssessmentResult } from "../lib/generate.js";
-import fallbackData from "../data/fallbacks/demo-profiles.json" with { type: "json" };
+import fallbackData from "../data/fallbacks/demo-profiles.json" assert { type: "json" };
 
 const router = Router();
 
