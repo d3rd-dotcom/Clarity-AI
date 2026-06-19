@@ -23,7 +23,7 @@
       ]"
       :disabled="!canGoNext"
       :aria-disabled="!canGoNext"
-      @click="canGoNext && emit(isLastStep ? 'submit' : 'next')"
+      @click="canGoNext && (isLastStep ? emit('submit') : emit('next'))"
     >
       {{ isLastStep ? 'Check my benefits' : 'Next →' }}
     </button>
