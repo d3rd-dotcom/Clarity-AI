@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`buildSituationText — demo profile snapshots > Profile A — single parent, unemployed, 2 children, renting, no health conditions 1`] = `"The person is a single parent who is unemployed and not working.  They have 2 children. They are renting a property privately. They are aged between 25 and 60. They have no health conditions or disabilities."`;
+
+exports[`buildSituationText — demo profile snapshots > Profile B — couple, employed, no children, renting, no health conditions 1`] = `"The person is a couple with no children who is employed. They are renting a property privately. They are aged between 25 and 60. They have no health conditions or disabilities."`;
+
+exports[`buildSituationText — demo profile snapshots > Profile C — single, unable to work, disability affects work, renting 1`] = `"The person is a single person with no children who is unable to work due to illness or disability. They are renting a property privately. They are aged between 25 and 60. They have a long-term health condition or disability that affects their ability to work."`;
