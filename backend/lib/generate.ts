@@ -261,7 +261,7 @@ export async function generateAssessment(
         {
           baseUrl:      "https://api.cerebras.ai/v1",
           apiKey:       cerebrasKey,
-          model:        "llama-3.3-70b",
+          model:        "gpt-oss-120b",
           providerName: "Cerebras",
         },
         SYSTEM_PROMPT,
