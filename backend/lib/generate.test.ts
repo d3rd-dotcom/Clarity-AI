@@ -37,8 +37,8 @@ describe('parseAssessmentJSON — valid input', () => {
 
     expect(result.data_source).toBe('live_rag')
     expect(result.benefits).toHaveLength(1)
-    expect(result.benefits[0].name).toBe('Universal Credit')
-    expect(result.benefits[0].confidence).toBe('HIGH')
+    expect(result.benefits[0]!.name).toBe('Universal Credit')
+    expect(result.benefits[0]!.confidence).toBe('HIGH')
     expect(result.total_monthly_estimate).toBe(675.56)
     expect(result.disclaimer.length).toBeGreaterThan(0)
   })
@@ -72,7 +72,7 @@ describe('parseAssessmentJSON — valid input', () => {
     }
 
     const result = parseAssessmentJSON(JSON.stringify(withMissingConfidence))
-    expect(result.benefits[0].confidence).toBe('NEEDS_REVIEW')
+    expect(result.benefits[0]!.confidence).toBe('NEEDS_REVIEW')
   })
 
   it('allows null weekly/monthly estimates when the LLM cannot estimate', () => {
@@ -81,8 +81,8 @@ describe('parseAssessmentJSON — valid input', () => {
       benefits: [{ ...VALID_RESPONSE.benefits[0], weekly_estimate: null, monthly_estimate: null }],
     }
     const result = parseAssessmentJSON(JSON.stringify(withNulls))
-    expect(result.benefits[0].weekly_estimate).toBeNull()
-    expect(result.benefits[0].monthly_estimate).toBeNull()
+    expect(result.benefits[0]!.weekly_estimate).toBeNull()
+    expect(result.benefits[0]!.monthly_estimate).toBeNull()
   })
 
   it('accepts multiple benefits in a single response', () => {

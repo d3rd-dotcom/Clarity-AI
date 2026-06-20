@@ -216,7 +216,7 @@ async function callLLM(
 // Uses Zod for full structural validation. A SyntaxError (invalid JSON) or
 // ZodError (wrong shape / types) both propagate to generateAssessment(),
 // where they are caught and trigger the demo fallback.
-function parseAssessmentJSON(raw: string): AssessmentResult {
+export function parseAssessmentJSON(raw: string): AssessmentResult {
   // Strip any accidental markdown fences the LLM may have added
   const cleaned = raw
     .replace(/^```json\s*/i, "")
