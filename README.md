@@ -6,8 +6,30 @@
 **Track:** College / Undergraduate — AI for Life & Work
 **Challenge Direction:** Public Services — Fix Systems People Depend On (Benefits Navigator)
 **Hackathon:** USAII Global AI Hackathon 2026
-**Live Demo:** *(paste Vercel URL here)*
-**Repository:** *(paste GitHub URL here)*
+**Live Demo:** *(https://clarity-ai-mu-topaz.vercel.app/)*
+**Repository:** *(https://github.com/d3rd-dotcom/Clarity-AI)*
+
+---
+
+We're excited to share **Clarity**, our submission to the USAII Global AI Hackathon 2026, Public Services track.
+
+We're building Clarity, an AI-native benefits guidance tool that helps people in the UK find money they're already owed but never claim.
+
+When we started researching this space, we couldn't believe the number we found. **£24.1 billion** in UK benefits goes unclaimed every single year, according to Policy in Practice's 2025 national report.
+
+Three things hit us hard. How invisible the problem was: most people have no idea this much money sits unclaimed each year. How fragmented the system is: dozens of benefits, each on its own GOV.UK page, written for caseworkers rather than the people who actually need them. And how the loss falls hardest on those who can least afford it: single parents, carers, people managing a health condition while also managing five different government forms.
+
+And that gap has a human cost behind it. The report's own director put it bluntly:
+
+> "It's not a failure of the public. It's a failure of a social security system that is still too complex, too fragmented and too passive."
+
+Over **7 million households** are missing an average of **£3,428 a year** each. Universal Credit alone accounts for **£11.1 billion** of that gap.
+
+So we built Clarity. A short set of plain-language questions, matched against real GOV.UK eligibility rules through a retrieval-augmented AI pipeline, returning a personalized answer in under two minutes — not a chatbot guessing, but a system that shows its reasoning and always routes the final decision back to GOV.UK.
+
+In our test profile, a single parent renting privately with two children was shown she may be leaving **£969 a month** unclaimed, across three benefits she didn't know applied to her.
+
+We're grateful to our mentors and the USAII Global AI Hackathon for pushing us to build this the right way — human problem first, AI second.
 
 ---
 
