@@ -35,7 +35,7 @@ We're grateful to our mentors and the USAII Global AI Hackathon for pushing us t
 
 ## The Person Behind This Project
 
-Sarah is a 28-year-old single mother of two in Manchester.
+Sarah is a 28-year-old single mother of one child in Manchester.
 She works part-time at a supermarket because childcare costs make full-time work financially impossible.
 She rents a flat. She has heard of Universal Credit but assumed she earns too much to qualify.
 She has never heard of Child Benefit as its own separate payment.
