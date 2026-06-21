@@ -1,104 +1,133 @@
+# Clarity — Your Eligibility AI
 
+> A benefits guidance tool powered by AI, built for the people who need it most.
 
-
-
-
-# <p align="center"><img src="https://img.shields.io/badge/Clarity-%E2%9C%A8%20Your%20Eligibility%20AI-00ffff?style=for-the-badge" /></p>
-
-<p align="center">
-  <strong>A benefits guidance tool powered by AI, built for the people who need it most.</strong>
-</p>
-
-<p align="center">
-  <a href="https://clarity-ai-mu-topaz.vercel.app/"><strong>⚡ View Live Demo</strong></a> • 
-  <a href="https://github.com/d3rd-dotcom/Clarity-AI"><strong>📦 Source Code</strong></a>
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Hackathon-USAII%20Global%20AI%202026-ffaa00?style=flat-square" />
-  <img src="https://img.shields.io/badge/Track-College%20%2F%20Undergraduate-blue?style=flat-square" />
-  <img src="https://img.shields.io/badge/Challenge-Public%20Services%20Navigator-brightgreen?style=flat-square" />
-</p>
+**Team:** FluxCore
+**Track:** College / Undergraduate — AI for Life & Work
+**Challenge Direction:** Public Services — Fix Systems People Depend On (Benefits Navigator)
+**Hackathon:** USAII Global AI Hackathon 2026
+**Live Demo:** *(paste Vercel URL here)*
+**Repository:** *(paste GitHub URL here)*
 
 ---
 
-## 🎯 The Core Thesis
+## The Person Behind This Project
 
-### The Person Behind This Project
-> **Meet Sarah:** A 28-year-old single mother of two in Manchester. She works part-time at a supermarket because childcare costs make full-time work financially impossible. She rents a flat. She has heard of *Universal Credit* but assumed she earns too much to qualify. She has never heard of *Child Benefit* as its own separate payment. **Nobody told her.**
+Sarah is a 28-year-old single mother of two in Manchester.
+She works part-time at a supermarket because childcare costs make full-time work financially impossible.
+She rents a flat. She has heard of Universal Credit but assumed she earns too much to qualify.
+She has never heard of Child Benefit as its own separate payment.
+Nobody told her.
 
-Every year, stories like Sarah's repeat across the UK — and **£24.1 billion** in benefits go unclaimed as a result. Not because people are lazy, but because the system was never built for them.
+Every year, stories like Sarah's repeat across the UK — and **£24.1 billion** in benefits go unclaimed as a result.
 
-### 📊 The Problem (Verified Data)
-According to Policy in Practice's *Missing Out* report:
-* **£24.1 Billion** in income-related benefits and social tariffs go unclaimed annually.
-* **7+ Million** households are actively missing out on vital support.
-* **£3,428 / Year** is the average amount an affected household leaves behind.
-
-> 🗣️ *"It's not a failure of the public. It's a failure of a social security system that is still too complex, too fragmented and too passive."* > — **Deven Ghelani**, Director of Policy in Practice
+Not because people are lazy.
+Because the system was never built for them.
 
 ---
 
-## 🛠️ What Clarity Does
+## The Problem (Verified Data)
 
-Clarity is a benefits guidance tool. It asks a short series of plain-language questions, identifies which benefits a person likely qualifies for, explains each one in plain English, and gives them a clear next step — **in under two minutes.** It does not replace GOV.UK; it makes it accessible.
+The UK benefits system spans dozens of benefit types, each with its own eligibility page, written in
+bureaucratic language, cross-referenced with other benefits, and updated on its own schedule.
 
-### 📋 Intelligent Intake Wizard
-The engine processes a 6-step dynamic form where the final question is conditionally injected to optimize user flow:
+According to Policy in Practice's 2025 "Missing Out" report:
+
+- **£24.1 billion** in income-related benefits and social tariffs will go unclaimed in the UK in 2025/26
+- Over **7 million households** are missing out
+- The average affected household misses **£3,428 per year**
+- **Universal Credit** alone accounts for £11.1 billion of that unclaimed total — the largest single category
+- **Pension Credit** has a take-up rate of just **62%** among eligible pensioners (DWP official statistics)
+- **Carer's Allowance**: £2.4 billion unclaimed, affecting an estimated 554,000 unpaid carers
+
+In the words of Deven Ghelani, Director of Policy in Practice:
+
+> "It's not a failure of the public. It's a failure of a social security system that is still too complex, too fragmented and too passive."
+
+That sentence is the entire thesis of this project.
+
+---
+
+## What Clarity Does
+
+Clarity is a benefits guidance tool. It asks a short series of plain-language questions, identifies which
+benefits a person likely qualifies for, explains each one in plain English, and gives them a clear next
+step — in under two minutes.
+
+It does not replace GOV.UK.
+It makes GOV.UK accessible.
+
+### The Intake Questions
 
 | # | Question | Why It Matters |
-|---|---|---|
-| **1** | What is your current work situation? | Determines Universal Credit and income-based eligibility |
-| **2** | Who do you live with? | Determines household benefit combinations |
-| **3** | What is your housing situation? | Determines Housing Benefit / housing element eligibility |
-| **4** | How old are you? | Affects Pension Credit and age-based thresholds |
-| **5** | Do you have a health condition or disability? | Determines PIP and Carer's Allowance eligibility |
-| **6** | *How many dependent children do you have? (Conditional)* | Drives Child Benefit, Child Tax Credit, Free School Meals |
+|---|----------|----------------|
+| 1 | What is your current work situation? | Determines Universal Credit and income-based eligibility |
+| 2 | Who do you live with? | Determines household benefit combinations |
+| 3 | What is your housing situation? | Determines Housing Benefit / housing element eligibility |
+| 4 | How old are you? | Affects Pension Credit and age-based thresholds |
+| 5 | Do you have a health condition or disability? | Determines PIP and Carer's Allowance eligibility |
+| 6 *(conditional)* | How many dependent children do you have? | Only shown if household includes children — drives Child Benefit, Child Tax Credit, Free School Meals |
 
-### 💎 The Output: The "MoneyCard" UI
-After the evaluation, the user is presented with a clear structural summary:
-* 💳 **The MoneyCard:** The signature UI element showing the estimated total monthly/weekly amount left unclaimed.
-* 🚦 **Confidence Badges:** Every matched benefit receives a clear badge (`Strong match` / `Possible match` / `Complex case`).
-* 🗺️ **Action Checklists:** Sourced, step-by-step guidance paired with an explicit **"Verify on GOV.UK"** outbound route.
+The sixth question only appears when relevant (single parent / couple with children), keeping the flow as
+short as possible for every user.
 
----
+### What the User Sees
 
-## 🏗️ Technical Architecture
+After completing the wizard, the user receives:
 
-Clarity features a robust, type-safe architecture separating a high-performance Vue 3 frontend from an Express RAG pipeline.
+- A **MoneyCard** — the signature UI element — showing the estimated total monthly and weekly amount
+  they may be leaving unclaimed
+- A list of matched benefits, each with a confidence badge (Strong match / Possible match / Complex case)
+- A plain-language explanation of why they likely qualify
+- An expandable, step-by-step claim checklist per benefit, sourced and dated from GOV.UK
+- A "Verify on GOV.UK" link on every single result
+- A disclaimer confirming no data is stored
 
+### Example Result
 
-```
+> **You may be leaving £969 per month unclaimed.**
+>
+> Universal Credit — £676/month — Strong match
+> Child Benefit — £184/month — Strong match
+> Free School Meals — £110/month — Strong match
 
-.
-├── backend/                # Express + TypeScript RAG pipeline (API)
-│   ├── api/                # Production endpoints (assess, health, protected indexer)
-│   ├── lib/                # Modular engine (embed, retrieve, generate, clients)
-│   ├── data/benefits/      # Structured benefit schemas & eligibility guidelines
-│   └── setup.sql           # Supabase vector configurations & HNSW indexing
-└── frontend/               # Vue 3 + Vite SPA
-├── components/         # Modular form wizards, dynamic MoneyCards, and UI kits
-└── stores/             # Pinia state machines managing intake logic
-
-```
-
-### ⚙️ Production Technology Stack
-
-| Layer | Technology | Purpose |
-|---|---|---|
-| **Frontend** | `Vue 3` + `TypeScript` + `Pinia` + `Vite` | State management, fast wizard execution |
-| **Styling** | `Tailwind CSS v4` | Trustworthy, highly-accessible dark/warm design system |
-| **Core API** | `Express` + `TypeScript` (`Node 20+`) | RAG orchestration, strict request validation |
-| **Vector Engine** | `Supabase` + `pgvector` (`HNSW Index`) | Sub-millisecond similarity lookups |
-| **Embeddings** | `Cohere embed-english-v3.0` | High-fidelity natural language vectorization |
-| **Reranking** | `Cohere rerank-english-v3.0` | Semantic sorting of retrieved policy text |
-| **Primary LLM** | `Cerebras (gpt-oss-120b)` | Ultra-low latency inference for live generation |
-| **Fallback LLM** | `Groq (llama-3.3-70b-versatile)` | Automatic failover layer to guarantee system uptime |
-| **Validation** | `Zod` | Structural schema runtime guards on all AI outputs |
+That number is the entire product. Everything else — the RAG retrieval, the LLM reasoning, the UI — exists
+to produce that number, correctly, for that specific person.
 
 ---
 
-## 🧠 Core RAG Pipeline Mechanics
+## Benefits Covered
+
+Clarity's first version covers seven of the most commonly unclaimed UK benefits, chosen for maximum
+real-world impact within a feasible scope.
+
+| Benefit | Who It Helps |
+|---|---|
+| Universal Credit | Low income or unemployed, broadest eligibility |
+| Child Benefit | Anyone responsible for a child under 16 (or under 20 in education) |
+| Housing Benefit | Pension-age renters or those in supported/temporary accommodation |
+| Child Tax Credit | Existing claimants not yet migrated to Universal Credit |
+| Free School Meals | Children in households receiving qualifying benefits |
+| Personal Independence Payment (PIP) | Long-term health conditions or disability |
+| Carer's Allowance | 35+ hours/week caring for someone receiving a qualifying disability benefit |
+
+All data is sourced directly from public GOV.UK eligibility pages under the Open Government Licence,
+manually structured and dated April 2025.
+
+---
+
+## How the AI Works
+
+Clarity is a benefits guidance tool first. The AI is what makes it work at scale — but it stays in the
+background, and its reasoning is always shown, never hidden.
+
+### Step 1 — Situation Summary
+The user's answers are converted into a natural-language situation description.
+Example: *"The person is a single parent who is unemployed and not working. They have 2 children. They
+are renting a property privately. They are aged between 25 and 60. They have no health conditions or
+disabilities."*
+
+### Step 2 — RAG Retrieval
 
 ```mermaid
 graph TD
@@ -113,51 +142,176 @@ graph TD
 
 ```
 
-1. **Context Extraction:** User responses are compiled into an explicit natural-language profile.
-2. **Vector Matching:** Profiles are vectorized via `embed-english-v3.0` and matched against target UK policy blocks using `pgvector` utilizing an **HNSW index** for blazing-fast lookups.
-3. **Low-Latency Logic:** The matched constraints pass directly to `Cerebras` to evaluate confidence, while `Groq` serves as an active fallback.
-4. **Deterministic Validation:** The AI's JSON output must cleanly map to a strict runtime **Zod schema** before delivery, completely mitigating UI breakages from structural drift or hallucinations.
-5. **Fail-Safe Integrity:** If any step in the pipeline hits an exception, the system gracefully serving one of three pre-verified regional profiles so the user never encounters a dead end.
+That situation is embedded using Cohere's `embed-english-v3.0` model and matched via cosine similarity
+search against a knowledge base of GOV.UK eligibility data stored in Supabase using `pgvector`, with an
+HNSW index for fast retrieval. Cohere Rerank (`rerank-english-v3.0`) re-orders results by true relevance
+when more than the needed number of chunks are returned.
+
+### Step 3 — AI Reasoning
+The retrieved eligibility rules and the user's situation are passed to **Cerebras** (primary LLM, chosen
+for low-latency inference) with **Groq** as an automatic fallback if Cerebras is unavailable. The model is
+instructed to assess each benefit, assign a confidence level, and explain its reasoning in plain English —
+and is explicitly forbidden from claiming final eligibility.
+
+### Step 4 — Validated Output
+Every LLM response is validated against a strict Zod schema before it ever reaches the user. Malformed or
+incomplete responses never reach the frontend — they trigger the fallback path instead (see below).
+
+### What the AI Does Not Decide
+The AI does not determine final eligibility. That decision always belongs to GOV.UK and the relevant
+government agency. This is enforced in the system prompt, the output schema, and the UI itself — the
+"Verify with GOV.UK" link appears on every single result, not buried in a footer.
+
+### Fallback Behaviour
+If embedding, retrieval, or generation fails at any point, the backend automatically serves one of three
+pre-verified demo profiles instead of an error — covering a single parent / unemployed / renting
+situation, a couple with part-time employment, and a single person unable to work due to a health
+condition. The user never sees a failure state, and judges reviewing a live demo will never hit a dead end.
 
 ---
 
-## ⚖️ Responsible AI & Compliance
+## Technical Architecture (As Built)
 
-* 🔒 **Zero Native Data Retention:** To maximize user trust and satisfy **UK GDPR** regulations regarding special-category data, no personal health, demographic, or income data is stored or logged. Data exists strictly within the ephemeral client session.
-* 🛑 **Authority Decoupling:** The AI is strictly sandboxed via system prompts to prevent it from declaring official legal eligibility. The interface maintains clear `"Verify with GOV.UK"` hooks for every calculation.
-* 🛡️ **Edge-Case Safety:** Complex configurations (e.g., non-standard immigration status or highly unique household structures) bypass predictive modeling and are safely flagged as `Needs Review` to prevent misclassification.
-* ⚡ **Production Hardening:** Locked down via target CORS allowlisting, rigorous rate-limiting, Helmet HTTP headers, and strict `npm audit` gates inside the CI/CD pipeline.
+| Layer | Technology | Purpose |
+|---|---|---|
+| Frontend | Vue 3 + TypeScript + Pinia + Vite | 6-step wizard, results display, state management |
+| Styling | Tailwind CSS v4 | Warm, trustworthy, accessible design system |
+| Backend | Express + TypeScript (Node 20+) | RAG pipeline API, validation, rate limiting |
+| Embeddings | Cohere `embed-english-v3.0` | Converts text into searchable vectors |
+| Reranking | Cohere `rerank-english-v3.0` | Improves retrieval accuracy (optional, automatic) |
+| Vector Store | Supabase (pgvector + HNSW index) | Stores and retrieves GOV.UK eligibility chunks |
+| Primary LLM | Cerebras (`gpt-oss-120b`) | Fast inference for eligibility reasoning |
+| Fallback LLM | Groq (`llama-3.3-70b-versatile`) | Automatic failover if Cerebras is unavailable |
+| Validation | Zod | Schema validation on every LLM response |
+| Deployment | Vercel (frontend) | Live URL for judges and users |
+| Data Source | GOV.UK public eligibility pages | Manually structured, openly licensed, dated |
 
----
-
-## 📈 Future Vision & Roadmap
-
-* [ ] **Real-Time Data Pipelines:** Replace static structured JSON policy logs with an automated scraper tied directly to the live GOV.UK API.
-* [ ] **Geographic Scaling:** Expand rule evaluations to support localized variations across Scotland, Wales, and Northern Ireland.
-* [ ] **Human-in-the-Loop Integrations:** Build secure handoff channels to Citizens Advice specialists for cases flagged as structurally complex.
-
----
-
-## 👥 The Team: FluxCore
-
-* **Product & Pitch Strategy:** Problem Space Analysis, UX Layouts, AI Safety Compliance Narrative.
-* **Technical Lead:** RAG System Design, Core LLM Orchestration, Vue Application State, Deployment Setup.
-
----
-
-<p align="center">
-<i>Clarity is not an AI automation tool. It is a benefits guidance tool, powered by AI. The difference matters.</i>
-</p>
+### Repository Structure
 
 ```
-
------
-
-### Why this updates the score to 1,000%:
-
-1.  **Visual Impact:** Instantly leverages clean markdown badges, scannable blockquotes, and professional data tables.
-2.  **Architecture Clarity:** Integrates a **Mermaid.js Flowchart** directly into the Markdown. GitHub renders this natively, visually explaining your RAG implementation to judges instantly.
-3.  **Structured Tech Stack:** Upgrades the tech list to a robust, three-column diagnostic database table layout.
-4.  **Production Polish:** Uses clean directory mapping conventions that emphasize clean structural design.
-
+.
+├── backend/          Express + TypeScript RAG pipeline (API)
+│   ├── api/          assess.ts, health.ts, index.ts (protected re-index endpoint)
+│   ├── lib/           embed.ts, retrieve.ts, generate.ts, indexer.ts, clients.ts
+│   ├── data/benefits/  7 benefit JSON files (eligibility rules, amounts, claim steps)
+│   ├── data/fallbacks/ 3 pre-verified demo profiles
+│   └── setup.sql       Supabase schema, RPC functions, RLS policies
+└── frontend/         Vue 3 + TypeScript wizard UI
+    ├── components/    form/, results/, ui/
+    ├── stores/        formStore.ts (wizard logic), resultsStore.ts (API state)
+    ├── composables/   useAssess.ts, useHealth.ts
+    └── data/          claimChecklists.ts (sourced, dated claim guidance)
 ```
+
+Both projects run as independent processes in development and deploy independently — backend to
+Railway/Render, frontend to Vercel — or together by serving the built frontend as static files from the
+backend.
+
+---
+
+## Responsible AI — Full Considerations
+
+### Data Accuracy
+All eligibility rules are sourced directly from GOV.UK public pages, manually transcribed and dated
+(April 2025). `backend/data/VERIFY.md` documents the annual review process for keeping rates current as
+UK benefit amounts typically change each April.
+
+### Harm Identification
+- **Misclassification** — confidence meter (High / Medium / Needs Review) flags uncertain results,
+  particularly for health and disability benefits requiring formal assessment
+- **Over-reliance** — consistent "may qualify" language throughout; never "you qualify"
+- **Outdated amounts** — every figure is timestamped; a documented review process exists for the annual
+  April uprating
+- **Privacy exposure** — no accounts, no data storage; answers exist only in-session and are discarded on
+  refresh; health and disability data is never logged server-side (special-category data under UK GDPR)
+
+### Bias Awareness
+The knowledge base is built from standard GOV.UK eligibility pages and performs best on common cases.
+Non-standard employment, complex household arrangements, or immigration-status edge cases are
+automatically flagged Needs Review rather than confidently guessed at.
+
+### Explainability
+Every result shows the specific GOV.UK rule that triggered the match, a confidence rating, and a
+plain-language explanation. The AI never produces a result without showing its reasoning.
+
+### Security
+- Strict CORS allowlisting in production (no wildcard fallback)
+- Rate limiting on all endpoints (tighter limits on the AI-assessment and re-indexing endpoints)
+- The protected re-indexing endpoint requires a constant-time secret comparison
+- Helmet-applied HTTP security headers on every response
+- `npm audit --audit-level=high` runs in CI on every push
+
+---
+
+## Impact
+
+### For One Person
+A user discovers a specific, personalized monthly figure they've never seen before, understands exactly
+why they qualify, and has a concrete next step — in two minutes, without reading a single government page.
+
+### At Scale
+If tools like Clarity helped recover even 1% of the £24.1 billion currently unclaimed, that is over
+**£240 million** redirected to the households Parliament intended to support.
+
+### For the System
+By surfacing eligibility in plain language and routing every result back to GOV.UK for confirmation,
+Clarity reduces the burden on services like Citizens Advice while increasing the effectiveness of
+support that already exists.
+
+---
+
+## Future Roadmap
+
+**Near-term:** expand from 7 to the full range of UK benefits; live GOV.UK API integration for real-time
+amounts; a document-upload feature that explains benefits forms field by field.
+
+**Longer-term:** coverage for Scotland, Wales, and Northern Ireland's devolved benefit variations;
+partnerships with Citizens Advice and similar organisations for a direct human-handoff path on Needs
+Review cases.
+
+---
+
+## Team — FluxCore
+
+| Role | Responsibilities |
+|---|---|
+| Product & Pitch | Problem research, user story, USAII submission, pitch deck, demo script, responsible AI narrative |
+| Technical Lead | RAG pipeline, LLM integration, frontend, deployment, testing |
+
+---
+
+## Data Sources
+
+All eligibility data is sourced from GOV.UK public pages under the Open Government Licence:
+
+- gov.uk/universal-credit/eligibility
+- gov.uk/child-benefit/eligibility
+- gov.uk/housing-benefit/eligibility
+- gov.uk/child-tax-credit/eligibility
+- gov.uk/apply-free-school-meals
+- gov.uk/pip/eligibility
+- gov.uk/carers-allowance/eligibility
+
+Problem-scale statistics are sourced from Policy in Practice's "Missing Out 2025" report (September 2025)
+and official DWP take-up statistics.
+
+No private or user-identifying data is collected, stored, or logged at any point.
+
+---
+
+## One Last Thing
+
+Clarity is not an AI automation tool.
+It is a benefits guidance tool, powered by AI.
+
+The difference matters.
+
+AI should not replace the systems designed to support people.
+It should make those systems visible — in plain language, in pounds per month, in two minutes — to the
+people they were always meant to help.
+
+---
+
+*Clarity — Your Eligibility AI*
+*Team FluxCore | USAII Global AI Hackathon 2026*
+*College / Undergraduate Track — AI for Life & Work*
